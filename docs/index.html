@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberPatch Manager Enterprise - Sécurité Défensive Opérationnelle</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i> CyberPatch Manager
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Fonctionnalités</a></li>
+                    <li><a href="#pricing">Tarifs</a></li>
+                    <li><a href="#specs">Technique</a></li>
+                    <li><a href="#contact" class="btn-primary">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>La solution souveraine de gestion des vulnérabilités</h1>
+            <p class="subtitle">Gestion du patching, réponse à incident et sécurité défensive opérationnelle pour les environnements critiques.</p>
+            <div class="cta-group">
+                <a href="#contact" class="btn-primary">Demander une démo</a>
+                <a href="#features" class="btn-secondary">En savoir plus</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Pourquoi CyberPatch Manager ?</h2>
+            <p class="intro-text">Plus qu'un outil de mise à jour, une plateforme de sécurité complète conçue pour les modes connectés et Air-Gap.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-sync-alt"></i>
+                    <h3>Patch Management Unifié</h3>
+                    <p>Détection et installation des mises à jour Windows et applications tierces (Chrome, Adobe...). Auto-guérison des agents Windows Update.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-user-secret"></i>
+                    <h3>Réponse à Incident</h3>
+                    <p>War Room exclusive : Isolation réseau d'urgence, durcissement immédiat (désactivation services vulnérables) et alertes SOC.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>Offline / Air-Gap</h3>
+                    <p>Kit Offline sur clé USB sécurisée pour mettre à jour les infrastructures critiques déconnectées (Usines, Banques, Zones Militaires).</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-eye"></i>
+                    <h3>Visibilité & Shadow IT</h3>
+                    <p>Détection des voisins réseau non gérés et audit runtime pour comparer processus en mémoire et fichiers sur disque.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIDEO DEMO SECTION -->
+    <section id="demo" class="video-section">
+        <div class="container">
+            <h2>Découvrez CyberPatch en Action</h2>
+            <p class="intro-text">Une interface moderne et intuitive pour piloter votre sécurité défensive.</p>
+            <div class="video-container">
+                <video controls playsinline autoplay muted loop>
+                    <source src="demo.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture de vidéos.
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2>Comparatif des Éditions</h2>
+            <div class="pricing-table">
+                <!-- Free Tier / Community Edition -->
+                <div class="price-col">
+                    <div class="badge" style="background-color: #22c55e;">Gratuit</div>
+                    <h3>Community</h3>
+                    <div class="price">0 FCFA <span class="period">/ vie</span></div>
+                    <div class="price-sub">(Gratuit)</div>
+                    <p class="target">Pour usage personnel / test</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Audit Windows Update</li>
+                        <li><i class="fas fa-check"></i> Installation Patchs</li>
+                        <li><i class="fas fa-check"></i> Auto-Guérison (Basique)</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Mise à jour Apps</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Scan Réseau</li>
+                        <li class="disabled"><i class="fas fa-times"></i> War Room (Isolation)</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Kit Offline</li>
+                    </ul>
+                    <a href="https://github.com/GHOSTHUNT-CORP/CyberPatchManager/releases/latest" class="btn-outline">Télécharger Gratuitement</a>
+                </div>
+
+                <div class="price-col">
+                    <h3>Standard</h3>
+                    <div class="price">~200 000 FCFA <span class="period">/ an</span></div>
+                    <div class="price-sub">(~300€)</div>
+                    <p class="target">Pour les petits parcs</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Audit Windows Update</li>
+                        <li><i class="fas fa-check"></i> Installation Patchs</li>
+                        <li><i class="fas fa-check"></i> Auto-Guérison (Avancé)</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Mise à jour Apps</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Scan Réseau</li>
+                        <li class="disabled"><i class="fas fa-times"></i> War Room (Isolation)</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Kit Offline</li>
+                    </ul>
+                    <a href="#contact" class="btn-outline">Choisir Standard</a>
+                </div>
+                <div class="price-col featured">
+                    <div class="badge">Populaire</div>
+                    <h3>Pro</h3>
+                    <div class="price">~500 000 FCFA <span class="period">/ an</span></div>
+                    <div class="price-sub">(~800€)</div>
+                    <p class="target">Pour les PME sécurisées</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Audit Windows Update</li>
+                        <li><i class="fas fa-check"></i> Installation Patchs</li>
+                        <li><i class="fas fa-check"></i> Mise à jour Apps</li>
+                        <li><i class="fas fa-check"></i> Scan Réseau</li>
+                        <li class="disabled"><i class="fas fa-times"></i> War Room (Isolation)</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Kit Offline</li>
+                    </ul>
+                    <a href="#contact" class="btn-primary">Choisir Pro</a>
+                </div>
+                <div class="price-col">
+                    <h3>Ultimate</h3>
+                    <div class="price">~1 300 000 FCFA <span class="period">/ an</span></div>
+                    <div class="price-sub">(~2000€)</div>
+                    <p class="target">Industries & OIV</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Audit Windows Update</li>
+                        <li><i class="fas fa-check"></i> Installation Patchs</li>
+                        <li><i class="fas fa-check"></i> Mise à jour Apps</li>
+                        <li><i class="fas fa-check"></i> Scan Réseau</li>
+                        <li><i class="fas fa-check"></i> <strong>War Room (Isolation)</strong></li>
+                        <li><i class="fas fa-check"></i> <strong>Kit Offline</strong></li>
+                    </ul>
+                    <a href="#contact" class="btn-outline">Choisir Ultimate</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="specs" class="specs">
+        <div class="container">
+            <h2>Spécifications Techniques</h2>
+            <div class="specs-content">
+                <div class="spec-item">
+                    <h4><i class="fab fa-windows"></i> OS Supportés</h4>
+                    <p>Windows 10, Windows 11, Windows Server 2016/2019/2022</p>
+                </div>
+                <div class="spec-item">
+                    <h4><i class="fas fa-microchip"></i> Architecture</h4>
+                    <p>Client lourd sécurisé (Electron + PowerShell signé)</p>
+                </div>
+                <div class="spec-item">
+                    <h4><i class="fas fa-lock"></i> Sécurité Maximale</h4>
+                    <p>Licences RSA-2048, Verrouillage Hardware ID, Confidentialité totale (Aucune donnée vers le cloud)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="contact-info">
+                    <h2>Contactez-nous</h2>
+                    <p>Pour une démonstration ou un devis personnalisé.</p>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:yao.kouakou.dev@gmail.com">yao.kouakou.dev@gmail.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <a href="https://wa.me/2250789696146">+225 07 89 69 61 46</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <a href="https://wa.me/2250140094507">+225 01 40 09 45 07</a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="#">Accueil</a></li>
+                        <li><a href="#features">Fonctionnalités</a></li>
+                        <li><a href="#pricing">Tarifs</a></li>
+                        <li><a href="#specs">Technique</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 CyberPatch Manager. Tous droits réservés.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
