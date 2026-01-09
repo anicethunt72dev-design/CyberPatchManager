@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Correctifs Cybersécurité</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span style="font-size: 2em;">🛡️</span>
+                <div>
+                    <h2 style="color: #fff;">CyberPatch</h2>
+                    <span style="font-size: 0.8em; color: #565f89;">Manager Enterprise</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button id="dashboard-nav-btn" class="nav-btn active" onclick="location.reload()">🏠 Tableau de Bord</button>
+                <button id="security-btn" class="nav-btn">🔐 Sécurité & Gouv.</button>
+                <button id="report-btn" class="nav-btn">📊 Reporting SOC</button>
+                <button id="ops-btn" class="nav-btn">📡 Live Ops</button>
+                <button id="lifecycle-btn" class="nav-btn">♾️ Cycle de Vie</button>
+                <button id="ecosystem-btn" class="nav-btn">🌐 Intégrations</button>
+                <button id="audit-btn" class="nav-btn">📋 Audit Logs</button>
+                <button id="history-btn" class="nav-btn">📜 Historique</button>
+            </nav>
+
+            <div style="margin-top: auto;">
+                <button id="settings-btn" class="nav-btn">⚙️ Paramètres</button>
+                <button id="about-btn" class="nav-btn">ℹ️ À propos</button>
+                <button id="quit-btn" class="nav-btn" style="color: #f7768e;">❌ Quitter</button>
+            </div>
+        </aside>
+
+        <!-- TOP BAR -->
+        <header class="top-bar">
+            <h1 style="font-size: 1.2em; margin: 0;">Tableau de Bord de Sécurité</h1>
+            
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="display: flex; align-items: center;">
+                    <label class="toggle-switch" title="Mode Silencieux">
+                        <input type="checkbox" id="silent-mode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span style="font-size: 0.8em; color: #565f89; margin-left: 5px;">Silent Mode</span>
+                </div>
+                
+                <select id="lang-select" class="lang-select">
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="en">🇺🇸 EN</option>
+                </select>
+
+                <button id="global-refresh-btn" class="btn secondary" style="padding: 5px 10px;" title="Rafraîchir l'application">🔄</button>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- ACTION BAR -->
+            <div class="action-bar">
+                <button id="scan-btn" class="btn primary">🔍 Scan WinUpdate</button>
+                <button id="apps-btn" class="btn secondary btn-orange">📦 Scan Apps</button>
+                <button id="scheduler-btn" class="btn secondary btn-green">⚙️ Planifier</button>
+                
+                <div style="border-left: 1px solid #414868; margin: 0 10px;"></div>
+                
+                <button id="auto-prioritize-btn" class="btn secondary" style="background-color: #7aa2f7; color: #1a1b26;">🧠 Auto-Priorité IA</button>
+                <button id="war-room-btn" class="btn secondary" style="background: #ff0033; color: white; border: 2px solid white; font-weight: bold;">☢️ WAR ROOM</button>
+                <button id="install-all-btn" class="btn secondary btn-red hidden">🚀 Tout Installer</button>
+                <button id="emergency-btn" class="btn secondary btn-red hidden" style="display:none;">🚨 OLD URGENCY</button>
+
+                <div style="flex: 1;"></div> <!-- Spacer -->
+                
+                <button id="export-btn" class="btn secondary btn-cyan hidden">📥 CSV</button>
+                <button id="pdf-btn" class="btn secondary btn-purple hidden">📄 PDF</button>
+                <div id="loader" class="loader hidden"></div>
+            </div>
+
+            <!-- PANELS -->
+            <div id="security-panel" class="dashboard-panel hidden" style="border-top: 4px solid #f7768e; background: #24283b;">
+                <h2 style="color: #f7768e;">🔐 Sécurité Défensive & Gouvernance</h2>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <!-- ZONE 1: QUARANTAINE -->
+                    <div style="flex: 1; min-width: 300px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <h3>🛑 Isolation Réseau (Quarantaine)</h3>
+                        <p style="font-size: 0.9em; margin-bottom: 15px; color: #a9b1d6;">Coupe tout trafic entrant/sortant sauf RDP & WinRM.</p>
+                        <button id="btn-quarantine-on" class="btn btn-red" style="width: 100%;">🔒 ACTIVER ISOLATION</button>
+                        <button id="btn-quarantine-off" class="btn btn-green hidden" style="width: 100%;">🔓 LEVER ISOLATION</button>
+                        <div id="quarantine-status" style="margin-top: 10px; font-weight: bold; color: #9ece6a;">Statut : Normal</div>
+                    </div>
+                    <!-- ZONE 2: GOUVERNANCE -->
+                    <div style="flex: 1; min-width: 300px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <h3>🏛️ Politique de Gouvernance</h3>
+                        <div style="margin-bottom: 10px;">
+                            <label style="display:block; margin-bottom:5px;">Criticité de l'Actif :</label>
+                            <select id="asset-criticality" style="width: 100%; padding: 8px; background: #24283b; color: white; border: 1px solid #414868;">
+                                <option value="Standard">🏢 Standard</option>
+                                <option value="Critical">🔥 Critique</option>
+                                <option value="Test">🧪 Test / Dev</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                             <label style="display:flex; align-items:center; gap: 10px;">
+                                 <input type="checkbox" id="require-approval">
+                                 Exiger validation (Mdp)
+                             </label>
+                        </div>
+                        <button id="save-policy-btn" class="btn secondary">Enregistrer</button>
+
+                        <div id="ai-policy-advisor" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #414868;">
+                            <h4 style="color: #bb9af7; margin-bottom: 8px;">🤖 AI Policy Advisor</h4>
+                            <div id="ai-policy-suggestions" style="font-size: 0.85em; color: #a9b1d6;">
+                                Analyse en cours...
+                            </div>
+                            <button id="btn-refresh-ai-policy" class="btn secondary" style="font-size: 0.8em; margin-top: 5px; padding: 4px 8px;">🔄 Rafraîchir</button>
+                        </div>
+                    </div>
+                    <!-- ZONE 3: THREAT INTEL -->
+                    <div style="flex: 1; min-width: 300px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <h3>🌍 Threat Intelligence (CISA)</h3>
+                        <div id="threat-status">Chargement...</div>
+                        <p style="font-size: 0.8em; margin-top: 10px; color: #565f89;">Basé sur CISA KEV Catalog.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="report-panel" class="dashboard-panel hidden" style="border-top: 4px solid #ff9e64; background: #24283b;">
+                <h2 style="color: #ff9e64;">📊 Reporting Avancé & Indicateurs SOC</h2>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; width: 100%;">
+                    <!-- ZONE 1: RISK SCORE -->
+                    <div style="flex: 1; min-width: 250px; background: #1a1b26; padding: 15px; border-radius: 8px; text-align: center;">
+                        <h3>🔥 Score de Risque</h3>
+                        <div class="risk-gauge-container">
+                            <div id="risk-score-val" class="risk-score-display" style="color: #9ece6a;">0</div>
+                            <div id="risk-level-text" class="risk-label" style="color: #9ece6a;">FAIBLE</div>
+                        </div>
+                        <p style="font-size: 0.8em; color: #565f89; margin-top: 10px;">Vulnérabilités Actives + CISA KEV</p>
+                    </div>
+                    <!-- ZONE 2: MATURITY -->
+                    <div style="flex: 1; min-width: 250px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <h3>📈 Maturité & Conformité</h3>
+                        <div style="margin-bottom: 15px;">
+                            <span style="display: block; color: #a9b1d6; font-size: 0.9em;">Indice de Maturité</span>
+                            <div style="background: #414868; height: 10px; border-radius: 5px; margin-top: 5px;">
+                                <div id="maturity-bar" style="background: #7aa2f7; width: 0%; height: 100%; border-radius: 5px; transition: width 1s;"></div>
+                            </div>
+                            <div id="maturity-text" style="text-align: right; font-size: 0.8em; color: #7aa2f7;">0%</div>
+                        </div>
+                        <div class="stats-cards" style="justify-content: center; gap: 10px;">
+                            <div class="card stat-card" style="padding: 10px; min-width: 80px;">
+                                <h3>Vitesse</h3>
+                                <span id="stat-velocity" style="font-size: 1.2em;">0</span>
+                            </div>
+                            <div class="card stat-card" style="padding: 10px; min-width: 80px;">
+                                <h3>Dette</h3>
+                                <span id="stat-debt" style="font-size: 1.2em; color: #f7768e;">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ZONE 3: HEATMAP -->
+                    <div style="flex: 2; min-width: 300px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <h3>🗺️ Cartographie (Heatmap)</h3>
+                        <div class="heatmap-container">
+                            <div id="heatmap-grid" class="heatmap-grid">
+                                <div style="color: #565f89; font-size: 0.9em; grid-column: 1 / -1;">Aucune donnée. Lancez un scan.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="lifecycle-panel" class="dashboard-panel hidden" style="border-top: 4px solid #7dcfff; background: #24283b;">
+                <h2 style="color: #7dcfff;">♾️ Cycle de Vie & Analytics (LCM)</h2>
+                
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <!-- EOL STATUS -->
+                    <div style="flex: 1; min-width: 300px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <h3>📅 Obsolescence OS (End of Life)</h3>
+                        <div id="eol-status-container" style="margin-top: 15px;">
+                            <div class="eol-card" style="border-left: 4px solid #9ece6a;">
+                                <strong>OS Actuel :</strong> <span id="eol-os-name">Windows 10/11</span>
+                                <p style="font-size: 0.8em; color: #a9b1d6;">Support standard : <span id="eol-support-date">Actif</span></p>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <button id="check-eol-btn" class="btn secondary" style="width: 100%;">Vérifier obsolescence</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BLACKLIST / EXCLUSIONS -->
+                    <div style="flex: 1; min-width: 300px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <h3>🚫 Exclusions & Blacklist KB</h3>
+                        <p style="font-size: 0.8em; color: #565f89; margin-bottom: 10px;">Empêche l'installation de KB spécifiques connues pour causer des crashs.</p>
+                        <div id="blacklist-container" class="scroll-area" style="max-height: 150px; background: #16161e; padding: 10px; border-radius: 4px;">
+                            <div style="text-align: center; color: #565f89; font-style: italic; font-size: 0.8em;">Liste vide</div>
+                        </div>
+                        <div style="display: flex; gap: 5px; margin-top: 10px;">
+                            <input type="text" id="blacklist-kb-input" placeholder="KB123456" style="flex: 1; padding: 5px; background: #24283b; color: white; border: 1px solid #414868;">
+                            <button id="add-blacklist-btn" class="btn secondary" style="padding: 5px 10px;">Ajouter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ops-panel" class="dashboard-panel hidden" style="border-top: 4px solid #7aa2f7; background: #24283b;">
+                <h2 style="color: #7aa2f7;">📡 Live Ops & Network Discovery</h2>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <!-- DISCOVERY -->
+                    <div style="flex: 2; min-width: 400px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <h3>🔍 Voisins Réseau (Discovery)</h3>
+                            <button id="scan-network-btn" class="btn secondary btn-cyan" style="font-size: 0.8em;">Lancer Scan LAN</button>
+                        </div>
+                        <div class="table-container" style="max-height: 300px;">
+                            <table style="width: 100%; font-size: 0.85em;">
+                                <thead>
+                                    <tr>
+                                        <th>IP</th>
+                                        <th>Hostname</th>
+                                        <th>Status</th>
+                                        <th>Géré ?</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="network-discovery-list">
+                                    <tr><td colspan="4" style="text-align: center; color: #565f89;">Aucun scan réseau effectué.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- AUTO-HEAL -->
+                    <div style="flex: 1; min-width: 250px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <h3>🛠️ Auto-Guérison (Self-Healing)</h3>
+                        <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                            <button class="btn secondary auto-heal-trigger" data-issue="WU_AGENT" style="text-align: left; font-size: 0.85em;">🩹 Réparer Agent WinUpdate</button>
+                            <button class="btn secondary auto-heal-trigger" data-issue="SPOOLER" style="text-align: left; font-size: 0.85em;">🩹 Reset Spouleur Impression</button>
+                            <button class="btn secondary auto-heal-trigger" data-issue="CACHE" style="text-align: left; font-size: 0.85em;">🩹 Purger Cache Updates</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ecosystem-panel" class="dashboard-panel hidden" style="border-top: 4px solid #bb9af7; background: #24283b;">
+                <h2 style="color: #bb9af7;">🌐 Écosystème & Continuité</h2>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <!-- WEBHOOKS -->
+                    <div style="flex: 1; min-width: 300px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <h3>🔌 Webhooks SOC/SIEM</h3>
+                        <div style="margin-top: 10px;">
+                            <label style="font-size: 0.8em; color: #a9b1d6;">URL Endpoint (JSON) :</label>
+                            <input type="text" id="webhook-url" placeholder="https://siem.local/webhook" style="width: 100%; padding: 8px; background: #24283b; color: white; border: 1px solid #414868; margin-top: 5px;">
+                            <button id="test-webhook-btn" class="btn secondary" style="width: 100%; margin-top: 10px;">Tester Connexion</button>
+                        </div>
+                    </div>
+                    <!-- OFFLINE KIT -->
+                    <div style="flex: 1; min-width: 300px; background: #1a1b26; padding: 15px; border-radius: 8px;">
+                        <h3>💾 Kit de Continuité (Offline)</h3>
+                        <p style="font-size: 0.85em; color: #a9b1d6; margin-bottom: 15px;">Génère un package autonome sur support amovible pour les zones Air-Gap.</p>
+                        <button id="gen-offline-kit-btn" class="btn secondary btn-green" style="width: 100%;">🚀 GÉNÉRER KIT OFFLINE</button>
+                        <div id="offline-kit-status" style="margin-top: 10px; font-size: 0.8em; color: #565f89;">Aucun kit généré.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="audit-panel" class="dashboard-panel hidden" style="border-top: 4px solid #cfc9c2; background: #24283b;">
+                <h2 style="color: #cfc9c2;">📋 Registre d'Audit de Sécurité (Ledger)</h2>
+                <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <p style="font-size: 0.85em; color: #a9b1d6;">Journal immuable chainé par hash SHA-256 pour conformité.</p>
+                    <button id="verify-audit-btn" class="btn secondary" style="font-size: 0.8em;">🔍 Vérifier Intégrité</button>
+                </div>
+                <div class="table-container" style="max-height: 500px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Horodatage</th>
+                                <th>Utilisateur</th>
+                                <th>Action</th>
+                                <th>Détails</th>
+                                <th>Hash</th>
+                            </tr>
+                        </thead>
+                        <tbody id="audit-list"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="dashboard-panel" class="dashboard-panel">
+                <div class="stats-cards">
+                    <div class="card stat-card">
+                        <h3>En attente</h3>
+                        <span id="pending-count">0</span>
+                    </div>
+                    <div class="card stat-card">
+                        <h3>Installées</h3>
+                        <span id="installed-count">0</span>
+                    </div>
+                    <div class="card stat-card">
+                        <h3>Echecs</h3>
+                        <span id="failed-count" style="color: #f7768e;">0</span>
+                    </div>
+                    <div class="card stat-card" id="stability-card" style="cursor: pointer;" title="Cliquez pour voir la timeline détaillée">
+                        <h3>Stabilité</h3>
+                        <span id="stability-score" style="color: #9ece6a;">100%</span>
+                    </div>
+                </div>
+
+                <div id="network-banner" class="network-banner hidden">
+                    <i class="fas fa-wifi-slash"></i> Mode Hors-Ligne détecté. Les actions sont mises en attente.
+                </div>
+
+                <div id="updates-container" class="updates-list">
+                    <div class="empty-state">
+                        <span style="font-size: 3em;">🔍</span>
+                        <p>Aucune donnée. Lancez un scan pour détecter les correctifs manquants.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="history-panel" class="dashboard-panel hidden">
+                <h2>Historique des Installations</h2>
+                <div id="history-list" class="updates-list"></div>
+            </div>
+
+            <div id="apps-panel" class="dashboard-panel hidden">
+                <h2>Gestion des Applications</h2>
+                <div id="apps-list" class="updates-list"></div>
+            </div>
+
+            <div id="scheduler-panel" class="dashboard-panel hidden">
+                <h2>Planificateur de Tâches</h2>
+                <div class="card">
+                    <p>Configurez l'exécution automatique des scans et installations.</p>
+                    <div style="margin-top: 20px;">
+                        <button id="enable-sched-btn" class="btn primary">Activer la tâche planifiée (Quotidien 22h)</button>
+                        <button id="disable-sched-btn" class="btn secondary">Désactiver la tâche planifiée</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settings-panel" class="dashboard-panel hidden">
+                <h2>Paramètres</h2>
+                <div class="card" style="margin-bottom: 20px;">
+                    <h3>🧠 Intelligence Artificielle (Auto-Pilot)</h3>
+                    <p style="font-size: 0.9em; color: #a9b1d6; margin-bottom: 15px;">Permet à l'IA de décider et d'installer les correctifs critiques de manière autonome.</p>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autopilot-toggle">
+                            <span class="slider"></span>
+                        </label>
+                        <span id="autopilot-status" style="font-weight: bold; color: #565f89;">DÉSACTIVÉ</span>
+                    </div>
+                    <div id="autopilot-restricted" class="hidden" style="margin-top: 10px; padding: 10px; background: #414868; border-radius: 4px; font-size: 0.85em; color: #ff9e64;">
+                        ⚠️ Cette fonctionnalité nécessite une licence Pro ou Ultimate.
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Licence CyberPatch</h3>
+                    <div id="license-info" style="margin-top: 10px;">
+                        <div id="license-status-badge" class="badge">Chargement...</div>
+                        <p id="license-details" style="font-size: 0.9em; margin-top: 10px;"></p>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <textarea id="license-input" placeholder="Collez votre clé de licence ici..." style="width: 100%; height: 80px; background: #1a1b26; color: white; border: 1px solid #414868; padding: 10px; border-radius: 4px; font-family: monospace;"></textarea>
+                        <button id="import-license-btn" class="btn secondary" style="margin-top: 5px;">Importer la licence</button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 20px;">
+                    <h3>Maintenance</h3>
+                    <button id="open-logs-btn" class="btn secondary">Ouvrir le dossier des logs</button>
+                </div>
+            </div>
+
+            <div id="about-panel" class="dashboard-panel hidden">
+                <h2>À propos</h2>
+                <div class="card">
+                    <h3>CyberPatch Manager Enterprise</h3>
+                    <p>Version 1.0.1</p>
+                    <p style="margin-top: 20px;">Solution souveraine de gestion des correctifs et de sécurité défensive.</p>
+                    <p>© 2026 GHOSTHUNT-CORP. Tous droits réservés.</p>
+                </div>
+            </div>
+        </main>
+        
+        <!-- STATUS BAR -->
+        <footer class="status-bar">
+            <span id="status-text">Statut : Prêt</span>
+            <div style="flex: 1;"></div>
+            <span id="network-status" class="status-badge status-online">En ligne</span>
+            <span id="cpu-usage" class="status-badge">CPU: 0%</span>
+            <span id="mem-usage" class="status-badge">RAM: 0MB</span>
+        </footer>
+    </div>
+
+    <!-- MODAL: TIMELINE -->
+    <div id="timeline-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 800px; width: 90%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 id="timeline-title">📜 Timeline d'Observabilité</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="timeline-content" class="timeline-list">
+                <!-- Data via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: COLLAB / AI ADVISOR -->
+    <div id="update-details-modal" class="modal hidden">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 id="modal-update-title">Détails du Correctif</h2>
+                <button class="close-modal" id="close-details-modal">&times;</button>
+            </div>
+            
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <!-- Gauche: Infos & AI -->
+                <div style="flex: 1; min-width: 300px;">
+                    <div id="ai-recommendation-box" style="background: #1a1b26; padding: 15px; border-radius: 8px; border-left: 4px solid #bb9af7; margin-bottom: 20px;">
+                        <h3 style="color: #bb9af7; font-size: 1.1em; margin-bottom: 10px;">🤖 Recommandation AI</h3>
+                        <div id="ai-action" style="font-weight: bold; margin-bottom: 5px; font-size: 1.2em;">Analyse...</div>
+                        <div id="ai-confidence" style="font-size: 0.8em; color: #565f89; margin-bottom: 10px;">Confiance : --%</div>
+                        <div id="ai-reasoning" style="font-size: 0.9em; color: #a9b1d6; line-height: 1.4;"></div>
+                    </div>
+
+                    <div id="impact-analysis-box" style="background: #1a1b26; padding: 15px; border-radius: 8px; border-left: 4px solid #7aa2f7; margin-bottom: 20px;">
+                        <h3 style="color: #7aa2f7; font-size: 1.1em; margin-bottom: 10px;">📊 Analyse d'Impact Estimée</h3>
+                        <div id="impact-downtime" style="font-size: 0.9em; margin-bottom: 5px;">Indisponibilité : -- min</div>
+                        <div id="impact-services" style="font-size: 0.9em; margin-bottom: 5px;">Services impactés : --</div>
+                        <div id="impact-risk" style="font-size: 0.9em;">Niveau de risque : --</div>
+                    </div>
+
+                    <div id="cve-intelligence-box" class="hidden" style="background: #1a1b26; padding: 15px; border-radius: 8px; border-left: 4px solid #f7768e;">
+                        <h3 style="color: #f7768e; font-size: 1.1em; margin-bottom: 10px;">🔥 Threat Intelligence (CVE)</h3>
+                        <div id="cve-list" style="font-size: 0.85em; color: #a9b1d6;"></div>
+                    </div>
+                </div>
+
+                <!-- Droite: Collaboration & Incidents -->
+                <div style="flex: 1; min-width: 300px;">
+                    <div style="background: #16161e; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <h3 style="font-size: 1.1em; margin-bottom: 10px;">👥 Collaboration (War Room)</h3>
+                        <div id="collab-comments" class="scroll-area" style="height: 150px; margin-bottom: 10px; font-size: 0.85em;"></div>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="text" id="comment-input" placeholder="Ajouter un commentaire..." style="flex: 1; padding: 5px; background: #24283b; color: white; border: 1px solid #414868;">
+                            <button id="add-comment-btn" class="btn secondary" style="padding: 5px 10px;">Envoyer</button>
+                        </div>
+                    </div>
+
+                    <div style="background: #16161e; padding: 15px; border-radius: 8px;">
+                        <h3 style="font-size: 1.1em; margin-bottom: 10px; color: #ff9e64;">⚠️ Signaler un Incident</h3>
+                        <p style="font-size: 0.8em; color: #565f89; margin-bottom: 10px;">Si ce correctif a causé un bug après installation, signalez-le pour l'apprentissage de l'IA.</p>
+                        <button id="report-incident-btn" class="btn btn-red" style="width: 100%;">SIGNALER UN RÉGRESSION</button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; text-align: right;">
+                <button id="modal-install-btn" class="btn primary">Installer maintenant</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="renderer.js"></script>
+</body>
+</html>

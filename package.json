@@ -1,0 +1,76 @@
+{
+  "name": "serveur-de-gestion-des-correctifs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pdf": "electron scripts/pdf_converter.js",
+    "dist": "electron-builder",
+    "package": "electron-packager . \"CyberPatchManager\" --platform=win32 --arch=x64 --out=dist --overwrite --ignore=\"^/src\""
+  },
+  "build": {
+    "appId": "com.cyberpatchmanager.pro",
+    "productName": "CyberPatchManager",
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "category": "System"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "license": "LICENSE",
+      "shortcutName": "CyberPatchManager"
+    },
+    "files": [
+      "**/*",
+      "!dist/*",
+      "!release/*",
+      "!src/*"
+    ],
+    "asarUnpack": [
+      "scripts/**"
+    ]
+  },
+  "keywords": [],
+  "author": "Yao Kouakou Luc Anicet Beranger (yao.kouakou.dev@gmail.com)",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^39.2.7",
+    "electron-builder": "^26.0.12",
+    "electron-packager": "^17.1.2"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "markdown-pdf": "^11.0.0"
+  }
+}
